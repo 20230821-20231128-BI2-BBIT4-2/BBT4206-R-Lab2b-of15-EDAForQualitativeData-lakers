@@ -37,7 +37,7 @@
 
 # The prompt received after executing renv::init() is as shown below:
 # This project already has a lockfile. What would you like to do?
-library(dplyr)
+
 
 # 1: Restore the project from the lockfile.
 # 2: Discard the lockfile and re-initialize the project.
