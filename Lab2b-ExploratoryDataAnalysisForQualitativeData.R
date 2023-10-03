@@ -569,7 +569,7 @@ evaluation_per_group_per_gender %>%
   ggtitle("Course Evaluation Rating per Group and per Gender") +
   labs(x = "Class Group", y = "Average Rating")
 
-#Decorated visual bar chat2
+#Decorated visual bar chart for average level of learning attained rating
 evaluation_per_group_per_gender %>%
   ggplot() +
   geom_bar(aes(x = class_group, y = average_level_of_learning_attained_rating,
@@ -578,7 +578,7 @@ evaluation_per_group_per_gender %>%
   expand_limits(y = 0) +
   blue_grey_theme() +
   scale_fill_manual(values = blue_grey_colours_2) +
-  ggtitle("Course Evaluation Rating per Group and per Gender") +
+  ggtitle("Level of learning attained per Group and per Gender") +
   labs(x = "Class Group", y = "Average Rating")
 
 # STEP 5. Data Cleansing for Qualitative Data ----
