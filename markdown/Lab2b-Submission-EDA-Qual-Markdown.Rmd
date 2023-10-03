@@ -255,6 +255,8 @@ Tabular output of the evaluation per group per gender of the average level of le
 
 ```{r Tabular output}
 library(dplyr)
+library(kableExtra)
+
 evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
   mutate(`Student's Gender` =
            ifelse(gender == 0, "Male", "Female")) %>%
@@ -274,29 +276,38 @@ View(evaluation_per_group_per_gender)
 A decorated tabular output of the evaluation per group per gender of the average level of learning attained rating.
 
 ```{r Decorated Tabular output}
-library(dplyr) 
-library(kableExtra)
-library(reactablefmtr)  
-  evaluation_per_group_per_gender %>%
+library(reactablefmtr)
+library(dplyr)
+evaluation_per_group_per_gender %>%
   rename(`Class Group` = class_group) %>%
   rename(`Average Level of Attained Learning` = average_level_of_learning_attained_rating) %>%
   select(`Class Group`, `Student's Gender`,
          `Average Level of Attained Learning`) %>%
   mutate(`Average Level of Attained Learning` =
            color_tile("#B9BCC2", "#536CB5")
-             (`Average Level of Attained Learning`)) %>%
+         (`Average Level of Attained Learning`)) %>%
   kable("html", escape = FALSE, align = "c",
         caption = "Attained Level of Learning Rating per Group and per Gender") %>%
-  kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),
-              full_width = FALSE)
+  kable_styling(bootstrap_options =
+                  c("striped", "condensed", "bordered"),
+                full_width = FALSE)
 ```
 
-## \<You Can Have Another Sub-Title Here if you wish\>
+## VISUAL BAR CHART
 
-Describe the code chunk here.
-
-```{r Your Eighth Code Chunk}
-# Fill this with other R related code that will be executed when the R markdown
+A visual bar chart of the evaluation per group per gender of the average level of learning attained rating.
+```{r Visual Bar chart}
+library(ggplot2)
+evaluation_per_group_per_gender %>%
+  ggplot() +
+  geom_bar(aes(x = class_group, y = average_level_of_learning_attained_rating,
+               fill = `Student's Gender`),
+           stat = "identity", position = "dodge") +
+  expand_limits(y = 0) +
+  blue_grey_theme() +
+  scale_fill_manual(values = blue_grey_colours_2) +
+  ggtitle("Level of learning attained per Group and per Gender") +
+  labs(x = "Class Group", y = "Average Level of Learning Attained Rating")
 ```
 
 **etc.** as per the lab submission requirements. Be neat and communicate in a clear and logical manner.

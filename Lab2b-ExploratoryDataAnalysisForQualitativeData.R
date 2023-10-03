@@ -579,7 +579,7 @@ evaluation_per_group_per_gender %>%
   blue_grey_theme() +
   scale_fill_manual(values = blue_grey_colours_2) +
   ggtitle("Level of learning attained per Group and per Gender") +
-  labs(x = "Class Group", y = "Average Rating")
+  labs(x = "Class Group", y = "Average Level of Learning Attained Rating")
 
 # STEP 5. Data Cleansing for Qualitative Data ----
 ## Contractions ----
