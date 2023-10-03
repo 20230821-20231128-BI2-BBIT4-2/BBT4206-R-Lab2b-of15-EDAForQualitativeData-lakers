@@ -274,6 +274,8 @@ View(evaluation_per_group_per_gender)
 A decorated tabular output of the evaluation per group per gender of the average level of learning attained rating.
 
 ```{r Decorated Tabular output}
+  library(dplyr)
+  library(kableExtra)
   evaluation_per_group_per_gender %>%
   rename(`Class Group` = class_group) %>%
   rename(`Average Level of Attained Learning` = average_level_of_learning_attained_rating) %>%
@@ -281,12 +283,11 @@ A decorated tabular output of the evaluation per group per gender of the average
          `Average Level of Attained Learning`) %>%
   mutate(`Average Level of Attained Learning` =
            color_tile("#B9BCC2", "#536CB5")
-         (`Average Level of Attained Learning`)) %>%
+             (`Average Level of Attained Learning`)) %>%
   kable("html", escape = FALSE, align = "c",
         caption = "Attained Level of Learning Rating per Group and per Gender") %>%
-  kable_styling(bootstrap_options =
-                  c("striped", "condensed", "bordered"),
-                full_width = FALSE)
+  kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),
+              full_width = FALSE)
 ```
 
 ## \<You Can Have Another Sub-Title Here if you wish\>
