@@ -28,7 +28,7 @@
 # "renv" It can be installed as follows:
 # if (!is.element("renv", installed.packages()[, 1])) {
 # install.packages("renv", dependencies = TRUE,
-repos = "https://cloud.r-project.org") # nolint
+#repos = "https://cloud.r-project.org") # nolint
 # }
 # require("renv") # nolint
 
@@ -513,7 +513,20 @@ evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
 
 # Plain tabular output
 View(evaluation_per_group_per_gender)
+#Evaluation of Average Level of Attained Learning
+evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
+  mutate(`Student's Gender` =
+           ifelse(gender == 0, "Male", "Female")) %>%
+  select(class_group, gender,
+         `Student's Gender`, `Average Level of Learning Attained Rating`) %>%
+  filter(!is.na(`Average Level of Learning Attained Rating`)) %>%
+  group_by(class_group, `Student's Gender`) %>%
+  summarise(average_level_of_learning_attained_rating =
+              mean(`Average Level of Learning Attained Rating`)) %>%
+  arrange(desc(average_level_of_learning_attained_rating), .by_group = TRUE)
 
+# Plain tabular output
+View(evaluation_per_group_per_gender)
 # Decorated tabular output
 evaluation_per_group_per_gender %>%
   rename(`Class Group` = class_group) %>%
