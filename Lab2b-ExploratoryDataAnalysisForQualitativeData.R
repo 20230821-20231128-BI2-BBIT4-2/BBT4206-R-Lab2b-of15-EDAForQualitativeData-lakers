@@ -37,6 +37,7 @@
 
 # The prompt received after executing renv::init() is as shown below:
 # This project already has a lockfile. What would you like to do?
+library(dplyr)
 
 # 1: Restore the project from the lockfile.
 # 2: Discard the lockfile and re-initialize the project.
@@ -525,8 +526,9 @@ evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
               mean(`Average Level of Learning Attained Rating`)) %>%
   arrange(desc(average_level_of_learning_attained_rating), .by_group = TRUE)
 
-# Plain tabular output
 View(evaluation_per_group_per_gender)
+
+
 # Decorated tabular output
 evaluation_per_group_per_gender %>%
   rename(`Class Group` = class_group) %>%

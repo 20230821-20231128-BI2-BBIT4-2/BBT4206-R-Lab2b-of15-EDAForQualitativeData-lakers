@@ -248,12 +248,24 @@ Next, we display the quartiles for each numeric variable[*... think of this proc
 summary(student_performance_dataset)
 ```
 
-# \<You can Provide Another Appropriate Title Here if you wish\>
+#\>TABULAR OUTPUT
 
-Describe the code chunk here.
+Tabular output of the evaluation per group per gender of the average level of learning attained rating.
 
-```{r Your Sixth Code Chunk}
-# Fill this with R related code that will be executed when the R markdown file
+```{r Tabular output}
+library(dplyr)
+evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
+  mutate(`Student's Gender` =
+           ifelse(gender == 0, "Male", "Female")) %>%
+  select(class_group, gender,
+         `Student's Gender`, `Average Level of Learning Attained Rating`) %>%
+  filter(!is.na(`Average Level of Learning Attained Rating`)) %>%
+  group_by(class_group, `Student's Gender`) %>%
+  summarise(average_level_of_learning_attained_rating =
+              mean(`Average Level of Learning Attained Rating`)) %>%
+  arrange(desc(average_level_of_learning_attained_rating), .by_group = TRUE)
+
+View(evaluation_per_group_per_gender)
 ```
 
 ## \<You Can Have a Sub-Title Here if you wish\>

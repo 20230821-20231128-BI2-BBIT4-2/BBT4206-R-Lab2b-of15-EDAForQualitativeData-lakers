@@ -8,8 +8,7 @@ Business Intelligence Lab Submission Markdown
 - [Loading the Student Performance
   Dataset](#loading-the-student-performance-dataset)
   - [Description of the Dataset](#description-of-the-dataset)
-- [\<You can Provide Another Appropriate Title Here if you
-  wish\>](#you-can-provide-another-appropriate-title-here-if-you-wish)
+- [\\TABULAR OUTPUT](#tabular-output)
   - [\<You Can Have a Sub-Title Here if you
     wish\>](#you-can-have-a-sub-title-here-if-you-wish)
   - [\<You Can Have Another Sub-Title Here if you
@@ -665,12 +664,44 @@ summary(student_performance_dataset)
     ##  Max.   :87.72                                
     ## 
 
-# \<You can Provide Another Appropriate Title Here if you wish\>
+# \\TABULAR OUTPUT
 
-Describe the code chunk here.
+Tabular output of the evaluation per group per gender of the average
+level of learning attained rating.
 
 ``` r
-# Fill this with R related code that will be executed when the R markdown file
+library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
+evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
+  mutate(`Student's Gender` =
+           ifelse(gender == 0, "Male", "Female")) %>%
+  select(class_group, gender,
+         `Student's Gender`, `Average Level of Learning Attained Rating`) %>%
+  filter(!is.na(`Average Level of Learning Attained Rating`)) %>%
+  group_by(class_group, `Student's Gender`) %>%
+  summarise(average_level_of_learning_attained_rating =
+              mean(`Average Level of Learning Attained Rating`)) %>%
+  arrange(desc(average_level_of_learning_attained_rating), .by_group = TRUE)
+```
+
+    ## `summarise()` has grouped output by 'class_group'. You can override using the
+    ## `.groups` argument.
+
+``` r
+View(evaluation_per_group_per_gender)
 ```
 
 ## \<You Can Have a Sub-Title Here if you wish\>
