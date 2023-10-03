@@ -543,11 +543,36 @@ evaluation_per_group_per_gender %>%
   kable_styling(bootstrap_options =
                   c("striped", "condensed", "bordered"),
                 full_width = FALSE)
-
+#Decorated tabular output of Average Level of Attained Learning
+evaluation_per_group_per_gender %>%
+  rename(`Class Group` = class_group) %>%
+  rename(`Average Level of Attained Learning` = average_level_of_learning_attained_rating) %>%
+  select(`Class Group`, `Student's Gender`,
+         `Average Level of Attained Learning`) %>%
+  mutate(`Average Level of Attained Learning` =
+           color_tile("#B9BCC2", "#536CB5")
+         (`Average Level of Attained Learning`)) %>%
+  kable("html", escape = FALSE, align = "c",
+        caption = "Attained Level of Learning Rating per Group and per Gender") %>%
+  kable_styling(bootstrap_options =
+                  c("striped", "condensed", "bordered"),
+                full_width = FALSE)
 # Decorated visual bar chart
 evaluation_per_group_per_gender %>%
   ggplot() +
   geom_bar(aes(x = class_group, y = average_evaluation_rating,
+               fill = `Student's Gender`),
+           stat = "identity", position = "dodge") +
+  expand_limits(y = 0) +
+  blue_grey_theme() +
+  scale_fill_manual(values = blue_grey_colours_2) +
+  ggtitle("Course Evaluation Rating per Group and per Gender") +
+  labs(x = "Class Group", y = "Average Rating")
+
+#Decorated visual bar chat2
+evaluation_per_group_per_gender %>%
+  ggplot() +
+  geom_bar(aes(x = class_group, y = average_level_of_learning_attained_rating,
                fill = `Student's Gender`),
            stat = "identity", position = "dodge") +
   expand_limits(y = 0) +
