@@ -274,8 +274,9 @@ View(evaluation_per_group_per_gender)
 A decorated tabular output of the evaluation per group per gender of the average level of learning attained rating.
 
 ```{r Decorated Tabular output}
-  library(dplyr)
-  library(kableExtra)
+library(dplyr) 
+library(kableExtra)
+library(reactablefmtr)  
   evaluation_per_group_per_gender %>%
   rename(`Class Group` = class_group) %>%
   rename(`Average Level of Attained Learning` = average_level_of_learning_attained_rating) %>%
