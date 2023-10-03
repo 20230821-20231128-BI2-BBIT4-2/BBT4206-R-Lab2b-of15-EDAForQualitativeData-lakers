@@ -98,6 +98,7 @@ knitr::opts_chunk$set(
 The 20230412-20230719-BI1-BBIT4-1-StudentPerformanceDataset is then loaded. The dataset and its metadata are available here: <https://drive.google.com/drive/folders/1-BGEhfOwquXF6KKXwcvrx7WuZXuqmW9q?usp=sharing>
 
 ```{r Load Dataset}
+library(readr)
 student_performance_dataset <-
   readr::read_csv(
                   "../data/20230412-20230719-BI1-BBIT4-1-StudentPerformanceDataset.CSV", # nolint
@@ -248,7 +249,7 @@ Next, we display the quartiles for each numeric variable[*... think of this proc
 summary(student_performance_dataset)
 ```
 
-#\>TABULAR OUTPUT
+# TABULAR OUTPUT
 
 Tabular output of the evaluation per group per gender of the average level of learning attained rating.
 
@@ -268,12 +269,24 @@ evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
 View(evaluation_per_group_per_gender)
 ```
 
-## \<You Can Have a Sub-Title Here if you wish\>
+## DECORATED TABULAR OUTPUT
 
-Describe the code chunk here.
+A decorated tabular output of the evaluation per group per gender of the average level of learning attained rating.
 
-```{r Your Seventh Code Chunk}
-# Fill this with other R related code that will be executed when the R markdown
+```{r Decorated Tabular output}
+  evaluation_per_group_per_gender %>%
+  rename(`Class Group` = class_group) %>%
+  rename(`Average Level of Attained Learning` = average_level_of_learning_attained_rating) %>%
+  select(`Class Group`, `Student's Gender`,
+         `Average Level of Attained Learning`) %>%
+  mutate(`Average Level of Attained Learning` =
+           color_tile("#B9BCC2", "#536CB5")
+         (`Average Level of Attained Learning`)) %>%
+  kable("html", escape = FALSE, align = "c",
+        caption = "Attained Level of Learning Rating per Group and per Gender") %>%
+  kable_styling(bootstrap_options =
+                  c("striped", "condensed", "bordered"),
+                full_width = FALSE)
 ```
 
 ## \<You Can Have Another Sub-Title Here if you wish\>

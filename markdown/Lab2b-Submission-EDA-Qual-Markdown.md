@@ -8,9 +8,8 @@ Business Intelligence Lab Submission Markdown
 - [Loading the Student Performance
   Dataset](#loading-the-student-performance-dataset)
   - [Description of the Dataset](#description-of-the-dataset)
-- [\\TABULAR OUTPUT](#tabular-output)
-  - [\<You Can Have a Sub-Title Here if you
-    wish\>](#you-can-have-a-sub-title-here-if-you-wish)
+- [TABULAR OUTPUT](#tabular-output)
+  - [DECORATED TABULAR OUTPUT](#decorated-tabular-output)
   - [\<You Can Have Another Sub-Title Here if you
     wish\>](#you-can-have-another-sub-title-here-if-you-wish)
 
@@ -90,6 +89,7 @@ loaded. The dataset and its metadata are available here:
 <https://drive.google.com/drive/folders/1-BGEhfOwquXF6KKXwcvrx7WuZXuqmW9q?usp=sharing>
 
 ``` r
+library(readr)
 student_performance_dataset <-
   readr::read_csv(
                   "../data/20230412-20230719-BI1-BBIT4-1-StudentPerformanceDataset.CSV", # nolint
@@ -664,7 +664,7 @@ summary(student_performance_dataset)
     ##  Max.   :87.72                                
     ## 
 
-# \\TABULAR OUTPUT
+# TABULAR OUTPUT
 
 Tabular output of the evaluation per group per gender of the average
 level of learning attained rating.
@@ -704,13 +704,10 @@ evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
 View(evaluation_per_group_per_gender)
 ```
 
-## \<You Can Have a Sub-Title Here if you wish\>
+## DECORATED TABULAR OUTPUT
 
-Describe the code chunk here.
-
-``` r
-# Fill this with other R related code that will be executed when the R markdown
-```
+A decorated tabular output of the evaluation per group per gender of the
+average level of learning attained rating.
 
 ## \<You Can Have Another Sub-Title Here if you wish\>
 
