@@ -28,7 +28,7 @@
 # "renv" It can be installed as follows:
 # if (!is.element("renv", installed.packages()[, 1])) {
 # install.packages("renv", dependencies = TRUE,
-repos = "https://cloud.r-project.org") # nolint
+#repos = "https://cloud.r-project.org") # nolint
 # }
 # require("renv") # nolint
 
@@ -37,6 +37,7 @@ repos = "https://cloud.r-project.org") # nolint
 
 # The prompt received after executing renv::init() is as shown below:
 # This project already has a lockfile. What would you like to do?
+
 
 # 1: Restore the project from the lockfile.
 # 2: Discard the lockfile and re-initialize the project.
@@ -513,6 +514,20 @@ evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
 
 # Plain tabular output
 View(evaluation_per_group_per_gender)
+#Evaluation of Average Level of Attained Learning
+evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
+  mutate(`Student's Gender` =
+           ifelse(gender == 0, "Male", "Female")) %>%
+  select(class_group, gender,
+         `Student's Gender`, `Average Level of Learning Attained Rating`) %>%
+  filter(!is.na(`Average Level of Learning Attained Rating`)) %>%
+  group_by(class_group, `Student's Gender`) %>%
+  summarise(average_level_of_learning_attained_rating =
+              mean(`Average Level of Learning Attained Rating`)) %>%
+  arrange(desc(average_level_of_learning_attained_rating), .by_group = TRUE)
+
+View(evaluation_per_group_per_gender)
+
 
 # Decorated tabular output
 evaluation_per_group_per_gender %>%
@@ -528,7 +543,20 @@ evaluation_per_group_per_gender %>%
   kable_styling(bootstrap_options =
                   c("striped", "condensed", "bordered"),
                 full_width = FALSE)
-
+#Decorated tabular output of Average Level of Attained Learning
+evaluation_per_group_per_gender %>%
+  rename(`Class Group` = class_group) %>%
+  rename(`Average Level of Attained Learning` = average_level_of_learning_attained_rating) %>%
+  select(`Class Group`, `Student's Gender`,
+         `Average Level of Attained Learning`) %>%
+  mutate(`Average Level of Attained Learning` =
+           color_tile("#B9BCC2", "#536CB5")
+         (`Average Level of Attained Learning`)) %>%
+  kable("html", escape = FALSE, align = "c",
+        caption = "Attained Level of Learning Rating per Group and per Gender") %>%
+  kable_styling(bootstrap_options =
+                  c("striped", "condensed", "bordered"),
+                full_width = FALSE)
 # Decorated visual bar chart
 evaluation_per_group_per_gender %>%
   ggplot() +
@@ -540,6 +568,18 @@ evaluation_per_group_per_gender %>%
   scale_fill_manual(values = blue_grey_colours_2) +
   ggtitle("Course Evaluation Rating per Group and per Gender") +
   labs(x = "Class Group", y = "Average Rating")
+
+#Decorated visual bar chart for average level of learning attained rating
+evaluation_per_group_per_gender %>%
+  ggplot() +
+  geom_bar(aes(x = class_group, y = average_level_of_learning_attained_rating,
+               fill = `Student's Gender`),
+           stat = "identity", position = "dodge") +
+  expand_limits(y = 0) +
+  blue_grey_theme() +
+  scale_fill_manual(values = blue_grey_colours_2) +
+  ggtitle("Level of learning attained per Group and per Gender") +
+  labs(x = "Class Group", y = "Average Level of Learning Attained Rating")
 
 # STEP 5. Data Cleansing for Qualitative Data ----
 ## Contractions ----

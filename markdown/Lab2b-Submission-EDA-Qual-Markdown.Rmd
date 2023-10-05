@@ -16,19 +16,19 @@ editor_options:
 # Student Details
 
 +---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Student ID Numbers and Names of Group Members** | *\<list one student name, class group (just the letter; A, B, or C), and ID per line, e.g., 123456 - A - John Leposo; you should be between 2 and 5 members per group\>* |
+| **Student ID Numbers and Names of Group Members** 
 |                                                   |                                                                                                                                                                          |
-|                                                   | 1.  ID - Class Group - Name                                                                                                                                              |
+|                                                   | 1.  134780 - C - Trevor Okinda                                                                                                                                              |
 |                                                   |                                                                                                                                                                          |
-|                                                   | 2.  ID - Class Group - Name                                                                                                                                              |
+|                                                   | 2.  132840 - C - Sheila Wangui                                                                                                                                              |
 |                                                   |                                                                                                                                                                          |
-|                                                   | 3.  ID - Class Group - Name                                                                                                                                              |
+|                                                   | 3.  131749 - C - Teresia Nungari                                                                                                                                              |
 |                                                   |                                                                                                                                                                          |
-|                                                   | 4.  ID - Class Group - Name                                                                                                                                              |
+|                                                   | 4.  135203 - C - Tom Arnold                                                                                                                                              |
 |                                                   |                                                                                                                                                                          |
-|                                                   | 5.  ID - Class Group - Name                                                                                                                                              |
+|                                                   |                                                                                                                                              |
 +---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **GitHub Classroom Group Name**                   | *\<specify the name of the team you created on GitHub classroom\>*                                                                                                       |
+| **GitHub Classroom Group Name**                   | Lakers                                                                                                       
 +---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | **Course Code**                                   | BBT4206                                                                                                                                                                  |
 +---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -98,6 +98,7 @@ knitr::opts_chunk$set(
 The 20230412-20230719-BI1-BBIT4-1-StudentPerformanceDataset is then loaded. The dataset and its metadata are available here: <https://drive.google.com/drive/folders/1-BGEhfOwquXF6KKXwcvrx7WuZXuqmW9q?usp=sharing>
 
 ```{r Load Dataset}
+library(readr)
 student_performance_dataset <-
   readr::read_csv(
                   "../data/20230412-20230719-BI1-BBIT4-1-StudentPerformanceDataset.CSV", # nolint
@@ -248,28 +249,65 @@ Next, we display the quartiles for each numeric variable[*... think of this proc
 summary(student_performance_dataset)
 ```
 
-# \<You can Provide Another Appropriate Title Here if you wish\>
+# TABULAR OUTPUT
 
-Describe the code chunk here.
+Tabular output of the evaluation per group per gender of the average level of learning attained rating.
 
-```{r Your Sixth Code Chunk}
-# Fill this with R related code that will be executed when the R markdown file
+```{r Tabular output}
+library(dplyr)
+library(kableExtra)
+
+evaluation_per_group_per_gender <- student_performance_dataset %>% # nolint
+  mutate(`Student's Gender` =
+           ifelse(gender == 0, "Male", "Female")) %>%
+  select(class_group, gender,
+         `Student's Gender`, `Average Level of Learning Attained Rating`) %>%
+  filter(!is.na(`Average Level of Learning Attained Rating`)) %>%
+  group_by(class_group, `Student's Gender`) %>%
+  summarise(average_level_of_learning_attained_rating =
+              mean(`Average Level of Learning Attained Rating`)) %>%
+  arrange(desc(average_level_of_learning_attained_rating), .by_group = TRUE)
+
+View(evaluation_per_group_per_gender)
 ```
 
-## \<You Can Have a Sub-Title Here if you wish\>
+## DECORATED TABULAR OUTPUT
 
-Describe the code chunk here.
+A decorated tabular output of the evaluation per group per gender of the average level of learning attained rating.
 
-```{r Your Seventh Code Chunk}
-# Fill this with other R related code that will be executed when the R markdown
+```{r Decorated Tabular output}
+library(reactablefmtr)
+library(dplyr)
+evaluation_per_group_per_gender %>%
+  rename(`Class Group` = class_group) %>%
+  rename(`Average Level of Attained Learning` = average_level_of_learning_attained_rating) %>%
+  select(`Class Group`, `Student's Gender`,
+         `Average Level of Attained Learning`) %>%
+  mutate(`Average Level of Attained Learning` =
+           color_tile("#B9BCC2", "#536CB5")
+         (`Average Level of Attained Learning`)) %>%
+  kable("html", escape = FALSE, align = "c",
+        caption = "Attained Level of Learning Rating per Group and per Gender") %>%
+  kable_styling(bootstrap_options =
+                  c("striped", "condensed", "bordered"),
+                full_width = FALSE)
 ```
 
-## \<You Can Have Another Sub-Title Here if you wish\>
+## VISUAL BAR CHART
 
-Describe the code chunk here.
-
-```{r Your Eighth Code Chunk}
-# Fill this with other R related code that will be executed when the R markdown
+A visual bar chart of the evaluation per group per gender of the average level of learning attained rating.
+```{r Visual Bar chart}
+library(ggplot2)
+evaluation_per_group_per_gender %>%
+  ggplot() +
+  geom_bar(aes(x = class_group, y = average_level_of_learning_attained_rating,
+               fill = `Student's Gender`),
+           stat = "identity", position = "dodge") +
+  expand_limits(y = 0) +
+  blue_grey_theme() +
+  scale_fill_manual(values = blue_grey_colours_2) +
+  ggtitle("Level of learning attained per Group and per Gender") +
+  labs(x = "Class Group", y = "Average Level of Learning Attained Rating")
 ```
 
 **etc.** as per the lab submission requirements. Be neat and communicate in a clear and logical manner.
